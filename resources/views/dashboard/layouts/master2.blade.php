@@ -13,10 +13,10 @@
 	<body class="main-body bg-primary-transparent">
 		<!-- Loader -->
 		<div id="global-loader">
-			<img src="{{URL::asset('dashboard/img/loader.svg')}}" class="loader-img" alt="Loader">
+			<img src="{{URL::asset('assets/dashboard/img/loader.svg')}}" class="loader-img" alt="Loader">
 		</div>
 		<!-- /Loader -->
 		@yield('content')
-		@include('layouts.footer-scripts')
+		@include('dashboard.layouts.footer-scripts')
 	</body>
 </html>
