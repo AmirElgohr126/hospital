@@ -29,6 +29,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'user_type' => ['required', 'string', 'in:admin,user'],
         ];
     }
 
@@ -40,15 +41,7 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
-
+        $this->loginBasedOnUserType();
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -62,11 +55,8 @@ class LoginRequest extends FormRequest
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
-
         event(new Lockout($this));
-
         $seconds = RateLimiter::availableIn($this->throttleKey());
-
         throw ValidationException::withMessages([
             'email' => trans('auth.throttle', [
                 'seconds' => $seconds,
@@ -81,5 +71,16 @@ class LoginRequest extends FormRequest
     public function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+    }
+
+    public function loginBasedOnUserType(): void
+    {
+        $credentials = $this->only('email', 'password');
+
+        if ($this->input('user_type') === 'admin') {
+            Auth::guard('admin')->attempt($credentials, $this->boolean('remember'));
+        } else {
+            Auth::guard('web')->attempt($credentials, $this->boolean('remember'));
+        }
     }
 }

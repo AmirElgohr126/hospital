@@ -3,49 +3,49 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Providers\RouteServiceProvider;
+use App\Repositories\Admin\AdminRepository;
+use App\Repositories\User\UserRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
+
+    public function __construct(private AdminRepository $adminRepository, private UserRepository $userRepository)
+    {
+        $this->adminRepository = $adminRepository;
+        $this->userRepository = $userRepository;
+    }
+
     public function create(): View
     {
         return view('dashboard.user.auth.signup');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse
+
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-        
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
+        $data = $request->validated();
+        $this->registerBasedOnUserType($data);
         return redirect(RouteServiceProvider::HOME);
     }
+
+
+    public function registerBasedOnUserType($data)
+    {
+        if($data['user_type'] === 'admin') {
+            $user = $this->adminRepository->adminCreate($data);
+            event(new Registered($user));
+            Auth::guard('admin')->login($user);
+        } else {
+            $user = $this->userRepository->userCreate($data);
+            event(new Registered($user));
+            Auth::guard('web')->login($user);
+        }
+    }
+
 }

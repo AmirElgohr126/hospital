@@ -31,10 +31,11 @@
                                     </div>
                                     <div class="main-signup-header">
                                         <h2 class="text-primary">Get Started</h2>
-                                        <h5 class="font-weight-normal mb-4">It's free to signup and only takes a minute.
-                                        </h5>
+                                        <h5 class="font-weight-normal mb-4">welcome to our dashboard</h5>
+
                                         <form method="POST" action="{{ route('register') }}">
                                             @csrf
+                                            
                                             <div class="form-group">
                                                 <label>Firstname & Lastname</label>
                                                 <input class="form-control @error('name') is-invalid @enderror"
@@ -72,7 +73,15 @@
                                                 @enderror
                                             </div>
 
-                                            
+                                            <div class="form-group">
+                                                <select class="form-control" aria-label="Default select example" name='user_type'>
+                                                    <option selected disabled>login as</option>
+                                                    <option value="admin">Admin</option>
+                                                    <option value="user">User</option>
+                                                </select>
+                                            </div>
+
+
                                             <button class="btn btn-main-primary btn-block" type="submit">Create
                                                 Account</button>
                                         </form>
