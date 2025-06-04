@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('remember_token')->nullable();
+            $table->string('role')->default('admin'); // Default role for admins
+            $table->string('status')->default('active'); // Default status for admins
+            $table->string('profile_picture')->nullable(); // Optional profile picture
+            $table->string('phone')->nullable(); // Optional phone number
+            $table->string('address')->nullable(); // Optional address
+            $table->string('city')->nullable(); // Optional city
+            $table->string('country')->nullable(); // Optional country
+            $table->string('postal_code')->nullable(); // Optional postal code
             $table->timestamps();
         });
     }

@@ -2,6 +2,11 @@
 @section('css')
     <link href="{{ URL::asset('assets/dashboard/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css') }}"
         rel="stylesheet">
+        <style>
+            .loginform{
+                display: none;
+            }
+        </style>
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -32,54 +37,113 @@
                                         <div class="main-signup-header">
                                             <h2>Welcome back!</h2>
                                             <h5 class="font-weight-semibold mb-4">Please sign in to continue.</h5>
-                                            <form action="{{ route('login') }}" method="POST">
-                                                @csrf
-                                                @if ($errors->any())
-                                                    <div class="alert alert-danger" role="alert">
-                                                        Please fix the following errors:
-                                                        <ul>
-                                                            @foreach ($errors->all() as $error)
-                                                                <li>{{ $error }}</li>
-                                                            @endforeach
-                                                        </ul>
+
+                                            <div class="form-group">
+                                                <select class="form-control" aria-label="Default select example" name='user_type'>
+                                                    <option selected disabled>login as</option>
+                                                    <option value="admin">Admin</option>
+                                                    <option value="user">User</option>
+                                                </select>
+                                            </div>
+{{-- --------------------------------------------------------------------------------------------------------------------- --}}
+                                            <div class="loginform" id="user">
+                                                <h5 class="font-weight-semibold mb-4">User Login</h5>
+                                                <form action="{{ route('login') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="user_type" value="user">
+                                                    @if ($errors->any())
+                                                        <div class="alert alert-danger" role="alert">
+                                                            Please fix the following errors:
+                                                            <ul>
+                                                                @foreach ($errors->all() as $error)
+                                                                    <li>{{ $error }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    @endif
+                                                    <div class="form-group">
+                                                        <label>Email</label>
+                                                        <input class="form-control @error('email') is-invalid @enderror"
+                                                            placeholder="Enter your email" type="email" name="email"
+                                                            value="{{ old('email') }}">
+                                                        @error('email')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
-                                                @endif
-                                                <div class="form-group">
-                                                    <label>Email</label>
-                                                    <input class="form-control @error('email') is-invalid @enderror"
-                                                        placeholder="Enter your email" type="email" name="email"
-                                                        value="{{ old('email') }}">
-                                                    @error('email')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Password</label>
-                                                    <input class="form-control @error('password') is-invalid @enderror"
-                                                        placeholder="Enter your password" type="password" name="password">
-                                                    @error('password')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                                
-                                                <button class="btn btn-main-primary btn-block" type="submit">Sign
-                                                    In</button>
-                                                <div class="row row-xs">
-                                                    <div class="col-sm-6">
-                                                        <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
-                                                            Signup with Facebook</button>
+                                                    <div class="form-group">
+                                                        <label>Password</label>
+                                                        <input class="form-control @error('password') is-invalid @enderror"
+                                                            placeholder="Enter your password" type="password" name="password">
+                                                        @error('password')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
-                                                    <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-                                                        <button class="btn btn-info btn-block"><i
-                                                                class="fab fa-twitter"></i> Signup with Twitter</button>
+
+                                                    <button class="btn btn-main-primary btn-block" type="submit">Sign
+                                                        In</button>
+                                                    <div class="row row-xs">
+                                                        <div class="col-sm-6">
+                                                            <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
+                                                                Signup with Facebook</button>
+                                                        </div>
+                                                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+                                                            <button class="btn btn-info btn-block"><i
+                                                                    class="fab fa-twitter"></i> Signup with Twitter</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
+                                            <div class="loginform" id="admin" >
+                                                <h5 class="font-weight-semibold mb-4">Admin Login</h5>
+                                                <form action="{{ route('login') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="user_type" value="admin">
+                                                    @if ($errors->any())
+                                                        <div class="alert alert-danger" role="alert">
+                                                            Please fix the following errors:
+                                                            <ul>
+                                                                @foreach ($errors->all() as $error)
+                                                                    <li>{{ $error }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+                                                    @endif
+                                                    <div class="form-group">
+                                                        <label>Email</label>
+                                                        <input class="form-control @error('email') is-invalid @enderror"
+                                                            placeholder="Enter your email" type="email" name="email"
+                                                            value="{{ old('email') }}">
+                                                        @error('email')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Password</label>
+                                                        <input class="form-control @error('password') is-invalid @enderror"
+                                                            placeholder="Enter your password" type="password" name="password">
+                                                        @error('password')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    <button class="btn btn-main-primary btn-block" type="submit">Sign
+                                                        In</button>
+                                                    <div class="row row-xs">
+                                                        <div class="col-sm-6">
+                                                            <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
+                                                                Signup with Facebook</button>
+                                                        </div>
+                                                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+                                                            <button class="btn btn-info btn-block"><i
+                                                                    class="fab fa-twitter"></i> Signup with Twitter</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
                                             <div class="main-signin-footer mt-5">
                                                 <p><a href="">Forgot password?</a></p>
-                                                <p>Don't have an account? <a
-                                                        href="{{ url('/' . ($page = 'signup')) }}">Create
-                                                        an Account</a></p>
+                                                <p>Don't have an account? <a href="{{ url('/' . ($page = 'signup')) }}">Create an Account</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -93,4 +157,13 @@
     </div>
 @endsection
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('select[name="user_type"]').change(function() {
+                var userType = $(this).val();
+                $('.loginform').hide();
+                $('#' + userType).show();
+            });
+        });
+    </script>
 @endsection
