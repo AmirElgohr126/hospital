@@ -27,7 +27,7 @@ Route::group(['middleware'=>'guest'], function (Router $router) {
     $router->post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::group(['middleware'=>'auth:admin'], function (Router $router) {
+Route::group(['middleware'=>'web_or_admin'], function (Router $router) {
     $router->get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     $router->post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
