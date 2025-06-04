@@ -1,8 +1,8 @@
 @extends('dashboard.layouts.master')
 @section('css')
-<!--  Owl-carousel css-->
+
 <link href="{{URL::asset('assets/dashboard/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
-<!-- Maps css -->
+
 <link href="{{URL::asset('assets/dashboard/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
 @endsection
 @section('page-header')
