@@ -37,7 +37,7 @@
                                         <div class="main-signup-header">
                                             <h2>Welcome back!</h2>
                                             <h5 class="font-weight-semibold mb-4">Please sign in to continue.</h5>
-
+                                            {{-- select admin or user --}}
                                             <div class="form-group">
                                                 <select class="form-control" aria-label="Default select example" name='user_type'>
                                                     <option selected disabled>login as</option>
@@ -51,16 +51,6 @@
                                                 <form action="{{ route('login') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="user_type" value="user">
-                                                    @if ($errors->any())
-                                                        <div class="alert alert-danger" role="alert">
-                                                            Please fix the following errors:
-                                                            <ul>
-                                                                @foreach ($errors->all() as $error)
-                                                                    <li>{{ $error }}</li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endif
                                                     <div class="form-group">
                                                         <label>Email</label>
                                                         <input class="form-control @error('email') is-invalid @enderror"
@@ -93,21 +83,12 @@
                                                     </div>
                                                 </form>
                                             </div>
+{{-- --------------------------------------------------------------------------------------------------------------------- --}}
                                             <div class="loginform" id="admin" >
                                                 <h5 class="font-weight-semibold mb-4">Admin Login</h5>
                                                 <form action="{{ route('login') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="user_type" value="admin">
-                                                    @if ($errors->any())
-                                                        <div class="alert alert-danger" role="alert">
-                                                            Please fix the following errors:
-                                                            <ul>
-                                                                @foreach ($errors->all() as $error)
-                                                                    <li>{{ $error }}</li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endif
                                                     <div class="form-group">
                                                         <label>Email</label>
                                                         <input class="form-control @error('email') is-invalid @enderror"
@@ -120,7 +101,7 @@
                                                     <div class="form-group">
                                                         <label>Password</label>
                                                         <input class="form-control @error('password') is-invalid @enderror"
-                                                            placeholder="Enter your password" type="password" name="password">
+                                                            placeholder="Enter your password" type="text" name="password">
                                                         @error('password')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
@@ -143,7 +124,7 @@
 
                                             <div class="main-signin-footer mt-5">
                                                 <p><a href="">Forgot password?</a></p>
-                                                <p>Don't have an account? <a href="{{ url('/' . ($page = 'signup')) }}">Create an Account</a></p>
+                                                <p>Don't have an account? <a href="{{ url('/' . ($page = 'register')) }}">Create an Account</a></p>
                                             </div>
                                         </div>
                                     </div>

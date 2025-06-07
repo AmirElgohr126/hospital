@@ -35,7 +35,7 @@
 
                                         <form method="POST" action="{{ route('register') }}">
                                             @csrf
-                                            
+
                                             <div class="form-group">
                                                 <label>Firstname & Lastname</label>
                                                 <input class="form-control @error('name') is-invalid @enderror"
@@ -57,7 +57,7 @@
                                             <div class="form-group">
                                                 <label>Password</label>
                                                 <input class="form-control @error('password') is-invalid @enderror"
-                                                    placeholder="Enter your password" type="password" name="password">
+                                                    placeholder="Enter your password" type="text" name="password">
                                                 @error('password')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -66,7 +66,7 @@
                                                 <label>Confirm Password</label>
                                                 <input
                                                     class="form-control @error('password_confirmation') is-invalid @enderror"
-                                                    placeholder="Enter Confirm password" type="password"
+                                                    placeholder="Enter Confirm password" type="text"
                                                     name="password_confirmation">
                                                 @error('password_confirmation')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -86,7 +86,7 @@
                                                 Account</button>
                                         </form>
                                         <div class="main-signup-footer mt-5">
-                                            <p>Already have an account? <a href="{{ url('/' . ($page = 'signin')) }}">Sign
+                                            <p>Already have an account? <a href="{{ url('/' . ($page = 'login')) }}">Sign
                                                     In</a>
                                             </p>
                                         </div>

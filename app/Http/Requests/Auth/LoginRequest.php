@@ -76,11 +76,12 @@ class LoginRequest extends FormRequest
     public function loginBasedOnUserType(): void
     {
         $credentials = $this->only('email', 'password');
+        $guard = $this->input('user_type') === 'admin' ? 'admin' : 'web';
 
-        if ($this->input('user_type') === 'admin') {
-            Auth::guard('admin')->attempt($credentials, $this->boolean('remember'));
-        } else {
-            Auth::guard('web')->attempt($credentials, $this->boolean('remember'));
+        if (!Auth::guard($guard)->attempt($credentials, $this->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
         }
     }
 }
