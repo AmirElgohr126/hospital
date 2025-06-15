@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
-require __DIR__.'/auth.php';
 require __DIR__.'/dashboard/auth.php';
+
+Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
+    Route::get('/', function () {
+        if (auth()->guard('admin')->check()) {
+            return redirect()->route('dashboard.admin');
+        } elseif (auth()->guard('web')->check()) {
+            return redirect()->route('dashboard.user');
+        }
+        return view('welcome');
+    })->name('welcome');
+});
