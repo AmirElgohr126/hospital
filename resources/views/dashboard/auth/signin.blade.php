@@ -31,46 +31,65 @@
                                     <div class="mb-5 d-flex"> <a href="{{ url('/' . ($page = 'index')) }}"><img
                                                 src="{{ URL::asset('assets/dashboard/img/brand/favicon.png') }}"
                                                 class="sign-favicon ht-40" alt="logo"></a>
-                                        <h1 class="main-logo1 ml-1 mr-0 my-auto tx-28">Va<span>le</span>x</h1>
+                                        <h1 class="main-logo1 ml-1 mr-0 my-auto tx-28">
+                                            <span>{{ __('auth.dashboard') }}</span>
+                                        </h1>
                                     </div>
                                     <div class="card-sigin">
                                         <div class="main-signup-header">
-                                            <h2>Welcome back!</h2>
-                                            <h5 class="font-weight-semibold mb-4">Please sign in to continue.</h5>
+                                            <h2>{{ __('auth.login') }}</h2>
+                                            <h5 class="font-weight-semibold mb-4">{{ __('auth.please_sign_in') }}</h5>
+
+                                            @if($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
                                             {{-- select admin or user --}}
                                             <div class="form-group">
                                                 <select class="form-control" aria-label="Default select example" name='user_type'>
-                                                    <option selected disabled>login as</option>
-                                                    <option value="admin">Admin</option>
-                                                    <option value="user">User</option>
+                                                    <option selected disabled>
+                                                        {{ __('auth.select_user_type') }}
+                                                    </option>
+                                                    <option value="admin">{{ __('auth.admin') }}</option>
+                                                    <option value="user">{{ __('auth.user') }}</option>
                                                 </select>
                                             </div>
 {{-- --------------------------------------------------------------------------------------------------------------------- --}}
                                             <div class="loginform" id="user">
-                                                <h5 class="font-weight-semibold mb-4">User Login</h5>
+                                                <h5 class="font-weight-semibold mb-4">
+                                                    {{ __('auth.login') }}
+                                                </h5>
                                                 <form action="{{ route('login') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="user_type" value="user">
                                                     <div class="form-group">
-                                                        <label>Email</label>
+                                                        <label>
+                                                            {{ __('auth.email') }}
+                                                        </label>
                                                         <input class="form-control @error('email') is-invalid @enderror"
-                                                            placeholder="Enter your email" type="email" name="email"
+                                                            placeholder="{{ __('auth.email') }}" type="email" name="email"
                                                             value="{{ old('email') }}">
                                                         @error('email')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                     <div class="form-group">
-                                                        <label>Password</label>
+                                                        <label>{{ __('auth.password') }}</label>
                                                         <input class="form-control @error('password') is-invalid @enderror"
-                                                            placeholder="Enter your password" type="password" name="password">
+                                                            placeholder="{{ __('auth.password') }}" type="password" name="password">
                                                         @error('password')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
 
-                                                    <button class="btn btn-main-primary btn-block" type="submit">Sign
-                                                        In</button>
+                                                    <button class="btn btn-main-primary btn-block" type="submit">
+                                                        {{ __('auth.login') }}
+                                                    </button>
                                                     <div class="row row-xs">
                                                         <div class="col-sm-6">
                                                             <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
@@ -85,46 +104,47 @@
                                             </div>
 {{-- --------------------------------------------------------------------------------------------------------------------- --}}
                                             <div class="loginform" id="admin" >
-                                                <h5 class="font-weight-semibold mb-4">Admin Login</h5>
+                                                <h5 class="font-weight-semibold mb-4">
+                                                    {{ __('auth.admin_login') }}
+                                                </h5>
                                                 <form action="{{ route('login') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="user_type" value="admin">
                                                     <div class="form-group">
-                                                        <label>Email</label>
+                                                        <label>{{ __('auth.email') }}</label>
                                                         <input class="form-control @error('email') is-invalid @enderror"
-                                                            placeholder="Enter your email" type="email" name="email"
+                                                            placeholder="{{ __('auth.email') }}" type="email" name="email"
                                                             value="{{ old('email') }}">
                                                         @error('email')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                     <div class="form-group">
-                                                        <label>Password</label>
+                                                        <label>{{ __('auth.password') }}</label>
                                                         <input class="form-control @error('password') is-invalid @enderror"
-                                                            placeholder="Enter your password" type="text" name="password">
+                                                            placeholder="{{ __('auth.password') }}" type="text" name="password">
                                                         @error('password')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
 
-                                                    <button class="btn btn-main-primary btn-block" type="submit">Sign
-                                                        In</button>
+                                                    <button class="btn btn-main-primary btn-block" type="submit">{{ __('auth.login') }}</button>
                                                     <div class="row row-xs">
                                                         <div class="col-sm-6">
                                                             <button class="btn btn-block"><i class="fab fa-facebook-f"></i>
-                                                                Signup with Facebook</button>
+                                                                {{ __('auth.signup_facebook') }}</button>
                                                         </div>
                                                         <div class="col-sm-6 mg-t-10 mg-sm-t-0">
                                                             <button class="btn btn-info btn-block"><i
-                                                                    class="fab fa-twitter"></i> Signup with Twitter</button>
+                                                                    class="fab fa-twitter"></i> {{ __('auth.signup_twitter') }}</button>
                                                         </div>
                                                     </div>
                                                 </form>
                                             </div>
 
                                             <div class="main-signin-footer mt-5">
-                                                <p><a href="">Forgot password?</a></p>
-                                                <p>Don't have an account? <a href="{{ url('/' . ($page = 'register')) }}">Create an Account</a></p>
+                                                <p><a href="">{{ __('auth.forgot_password') }}</a></p>
+                                                <p>{{ __('auth.dont_have_account') }} <a href="{{ url('/' . ($page = 'register')) }}">{{ __('auth.register') }}</a></p>
                                             </div>
                                         </div>
                                     </div>
