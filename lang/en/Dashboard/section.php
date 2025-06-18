@@ -1,0 +1,21 @@
+<?php
+return [
+    'departments' => 'Departments',
+    'all_departments' => 'All Departments',
+    'department_name' => 'Department Name',
+    'created_at' => 'Created At',
+    'operation' => 'Operations',
+    'add_department' => 'Add Department',
+    'edit_department' => 'Edit Department',
+    'update_department' => 'Update Department',
+    'delete_department' => 'Delete Department',
+    'confirm_delete' => 'Are you sure you want to delete this department?',
+    'yes' => 'Yes',
+    'no' => 'No',
+    'error' => 'Error',
+    'close' => 'Close',
+    'enter_department_name' => 'Enter Department Name',
+    'add_department_success' => 'Department added successfully',
+    'edit_department_success' => 'Department updated successfully',
+    'delete_department_success' => 'Department deleted successfully',
+];

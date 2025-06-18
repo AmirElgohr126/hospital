@@ -10,10 +10,9 @@ use App\Http\Controllers\Dashboard\Admin\AdminDashboardController;
 
 
 $localizationPrefix = LaravelLocalization::setLocale();
-$localizationMiddleware = ['localize', 'localeSessionRedirect', 'localeViewPath'];
+$localizationMiddleware = ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'];
 
-Route::group(
-    [
+Route::group([
         'prefix' => $localizationPrefix,
         'middleware' => $localizationMiddleware
     ],
