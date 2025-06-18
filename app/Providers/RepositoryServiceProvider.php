@@ -2,14 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\Admin;
 use App\Models\User;
-use App\Repositories\Admin\AdminRepository;
-use App\Repositories\User\UserRepository;
-use App\Repositories\Admin\Eloquent\EloquentAdminRepository;
-use App\Repositories\User\Eloquent\EloquentUserRepository;
-
+use App\Models\Admin;
+use App\Models\Section;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\User\UserRepository;
+use App\Repositories\Admin\AdminRepository;
+use App\Repositories\Sections\SectionRepository;
+
+use App\Repositories\User\Eloquent\EloquentUserRepository;
+use App\Repositories\Admin\Eloquent\EloquentAdminRepository;
+use App\Repositories\Sections\Eloquent\EloquentSectionRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -33,5 +36,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AdminRepository::class, function () {
             return new EloquentAdminRepository(new Admin());
         });
+
+        $this->app->bind(SectionRepository::class, function () {
+            return new EloquentSectionRepository(new Section());
+        });
+
     }
 }

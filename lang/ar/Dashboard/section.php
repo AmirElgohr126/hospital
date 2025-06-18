@@ -1,0 +1,21 @@
+<?php
+return [
+    'departments' => 'الأقسام',
+    'all_departments' => 'جميع الأقسام',
+    'department_name' => 'اسم القسم',
+    'created_at' => 'تاريخ الإنشاء',
+    'operation' => 'العمليات',
+    'add_department' => 'إضافة قسم',
+    'edit_department' => 'تعديل القسم',
+    'update_department' => 'تحديث القسم',
+    'delete_department' => 'حذف القسم',
+    'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذا القسم؟',
+    'yes' => 'نعم',
+    'no' => 'لا',
+    'error' => 'خطأ',
+    'close' => 'إغلاق',
+    'enter_department_name' => 'أدخل اسم القسم',
+    'add_department_success' => 'تمت إضافة القسم بنجاح',
+    'edit_department_success' => 'تم تحديث القسم بنجاح',
+    'delete_department_success' => 'تم حذف القسم بنجاح',
+];
