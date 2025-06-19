@@ -9,4 +9,13 @@ return [
     'users' => 'Users',
     'settings' => 'Settings',
     'logout' => 'Logout',
+    // ====================================================
+    'all_doctors' => 'All Doctors',
+    'doctors' => 'Doctors',
+    'add_doctor' => 'Add Doctor',
+    'name' => 'Name',
+    'edit' => 'Edit Doctor',
+    'show' => 'Show Doctor',
+    'delete' => 'Delete Doctor',
+    'search' => 'Search Doctor',
 ];

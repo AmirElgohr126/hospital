@@ -42,7 +42,8 @@ interface BaseRepository
 
     public function orderBy($orderBy, $sortedBy = 'asc');
     public function filter(array $attributes, $orderBy = null, $sortedBy = 'asc');
-    public function saveImage($file, $path = 'random');
+    public function saveImage($newFile, $path = 'random');
+    public function deleteImage($newFile, $path = 'random');
     public function paginate($items, $perPage = 10, $page = null, $options = []);
     public function allPaginated();
 }
