@@ -40,8 +40,8 @@
                             placeholder="{{ __('Dashboard/doctors.enter_doctor_schedule') }}">
                     </div>
                     <div class="form-group">
-                        <label for="doctorImage">{{ __('Dashboard/doctors.image') }}</label>
-                        <input type="file" class="form-control" id="doctorImage" name="profile_picture"
+                        <label for="addDoctorImage">{{ __('Dashboard/doctors.image') }}</label>
+                        <input type="file" class="form-control" id="addDoctorImage" name="profile_picture"
                             accept="image/*">
                         <img id="currentDoctorImage" src="" alt="Current Doctor Image" class="img-thumbnail mt-2"
                             style="max-width: 200px; display: none;">

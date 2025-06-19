@@ -5,6 +5,7 @@ use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Doctor extends Model implements TranslatableContract
 {
@@ -17,7 +18,6 @@ class Doctor extends Model implements TranslatableContract
         'appointment_schedule',
         'phone',
         'email',
-        'profile_picture',
         'is_active',
     ];
 
@@ -27,4 +27,11 @@ class Doctor extends Model implements TranslatableContract
         'specialization',
         'appointment_schedule',
     ];
+
+
+
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }
