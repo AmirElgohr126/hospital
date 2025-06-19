@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection as SupportCollections;
+use Illuminate\Support\Facades\Storage;
 
 
 abstract class EloquentBaseRepository implements BaseRepository
@@ -191,11 +192,21 @@ abstract class EloquentBaseRepository implements BaseRepository
         return $query;
     }
 
-    public function saveImage($file, $path = 'random')
+    public function saveImage($newFile, $path = 'random')
     {
-        $path = $file->store('public/' . $path);
+        $path = $newFile->store('public/' . $path);
         $path = str_replace('public', 'storage', $path);
         return $path;
+    }
+
+    public function deleteImage($newFilePath, $path = 'random')
+    {
+        $filePath = str_replace('public/' . $path, 'public', $newFilePath);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            return true;
+        }
+        return false;
     }
 
 
