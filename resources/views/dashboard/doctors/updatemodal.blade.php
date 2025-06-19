@@ -41,11 +41,11 @@
                     </div>
                     {{-- view image if exists --}}
                     <div class="form-group">
-                        <label for="doctorImage">{{ __('Dashboard/doctors.image') }}</label>
-                        <input type="file" class="form-control" id="doctorImage" name="profile_picture"
+                        <label for="DoctorImageInUpdate">{{ __('Dashboard/doctors.image') }}</label>
+                        <input type="file" class="form-control" id="DoctorImageInUpdate" name="profile_picture"
                             accept="image/*">
                         <small class="form-text text-muted">{{ __('Dashboard/doctors.update_doctor_image') }}</small>
-                        <img id="currentDoctorImage" src="" alt="Current Doctor Image" class="img-thumbnail mt-2"
+                        <img id="currentDoctorImageInUpdate" src="" alt="Current Doctor Image" class="img-thumbnail mt-2"
                             style="max-width: 200px;">
                     </div>
                 </div>

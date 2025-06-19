@@ -100,7 +100,7 @@
                                                 data-specialization="{{ $doctor->specialization }}"
                                                 data-biography="{{ $doctor->biography }}"
                                                 data-appointment_schedule="{{ $doctor->appointment_schedule }}"
-                                                data-image="{{ $doctor->profile_picture }}">
+                                                data-url="{{ $doctor->image->url ?? '' }}">
                                                 <i class="las la-pen"></i>
                                                 {{ __('Dashboard/doctors.edit') }}
                                             </a>
@@ -161,11 +161,12 @@
             var specialization = button.data('specialization');
             var biography = button.data('biography');
             var appointment_schedule = button.data('appointment_schedule');
-            var image = button.data('image');
             // If image exists, set the src attribute
-            var currentImage = $('#currentDoctorImage');
+            var image = button.data('url');
+            var currentImage = $('#currentDoctorImageInUpdate').show();
+
+            path = '{{ env('APP_URL') . '/hospital/public/' }}';
             if (image) {
-                path = '{{ env('APP_URL') . '/hospital/public/' }}';
                 currentImage.attr('src', path + image).show();
             } else {
                 currentImage.hide();
@@ -179,20 +180,37 @@
             modal.find('#doctorSpecialization').val(specialization);
             modal.find('#doctorBio').val(biography);
             modal.find('#appointment_schedule').val(appointment_schedule);
+
         });
     </script>
 
     <script>
-        $(document).on('change', '#doctorImage', function() {
+        $(document).on('change', '#DoctorImageInUpdate', function() {
             var input = this;
+            var currentImage = $('#currentDoctorImageInUpdate');
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    $('#currentDoctorImage').attr('src', e.target.result).show();
+                    currentImage.attr('src', e.target.result).show();
                 };
                 reader.readAsDataURL(input.files[0]);
             } else {
-                $('#currentDoctorImage').hide();
+                currentImage.hide();
+            }
+        });
+    </script>
+    <script>
+        $(document).on('change', '#addDoctorImage', function() {
+            var input = this;
+            var currentImage = $('#currentDoctorImage');
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImage.attr('src', e.target.result).show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                currentImage.hide();
             }
         });
     </script>
