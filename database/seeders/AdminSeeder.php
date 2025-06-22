@@ -2,17 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\Doctor;
+use App\Models\Admin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DoctorSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
-
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        Doctor::factory()
-            ->count(10)
+        Admin::factory()
+            ->count(1)
             ->create();
     }
 }

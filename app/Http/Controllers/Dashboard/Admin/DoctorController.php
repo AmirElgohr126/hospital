@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard\Admin;
+use App\Models\Day;
+use App\Repositories\Sections\SectionRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Doctors\DoctorRepository;
@@ -9,7 +11,7 @@ use App\Http\Requests\Dashboard\Doctor\UpdateDoctorRequest;
 
 class DoctorController extends Controller
 {
-    public function __construct(private DoctorRepository $doctorRepository)
+    public function __construct(private DoctorRepository $doctorRepository,private SectionRepository $sectionRepository)
     {
     }
 
@@ -28,7 +30,9 @@ class DoctorController extends Controller
 
     public function create()
     {
-        return view('doctors.create');
+        $sections = $this->sectionRepository->getAllSections();
+        $days = Day::all();
+        return view('dashboard.doctors.add-doctor', compact('sections', 'days'));
     }
 
 
@@ -40,6 +44,13 @@ class DoctorController extends Controller
         return redirect()->route('dashboard.admin.doctors.index');
     }
 
+    public function edit($id)
+    {
+        $doctor = $this->doctorRepository->find($id);
+        $sections = $this->sectionRepository->getAllSections();
+        $days = Day::all();
+        return view('dashboard.doctors.edit-doctor', compact('doctor', 'sections', 'days'));
+    }
 
 
     public function update(UpdateDoctorRequest $request, $id)
@@ -47,7 +58,7 @@ class DoctorController extends Controller
         $data = $request->validated();
         $doctor = $this->doctorRepository->find($id);
         $this->doctorRepository->adminUpdate($doctor, $data);
-        session()->flash('edit', __('Dashboard/doctors.doctor_updated_successfully'));
+        session()->flash('update', __('Dashboard/doctors.doctor_updated_successfully'));
         return redirect()->route('dashboard.admin.doctors.index');
     }
 

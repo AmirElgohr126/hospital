@@ -20,7 +20,8 @@ Route::group(['middleware' => 'auth:admin','prefix' => 'dashboard/admin'], funct
     $router->get('/doctors', [DoctorController::class, 'index'])->name('dashboard.admin.doctors.index');
     $router->get('/doctors/create', [DoctorController::class, 'create'])->name('dashboard.admin.doctors.create');
     $router->post('/doctors/store', [DoctorController::class, 'store'])->name('dashboard.admin.doctors.store');
-    $router->post('/doctors/update/{id}', [DoctorController::class, 'update'])->name('dashboard.admin.doctors.update');
+    $router->get('/doctors/edit/{id}', [DoctorController::class, 'edit'])->name('dashboard.admin.doctors.edit');
+    $router->put('/doctors/update/{id}', [DoctorController::class, 'update'])->name('dashboard.admin.doctors.update');
     $router->get('/doctors/{id}', [DoctorController::class, 'show'])->name('dashboard.admin.doctors.show');
     $router->delete('/doctors/{id}', [DoctorController::class, 'destroy'])->name('dashboard.admin.doctors.destroy');
 });

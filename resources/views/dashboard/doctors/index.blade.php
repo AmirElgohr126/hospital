@@ -58,8 +58,8 @@
 @endsection
 @section('content')
     <!-- row -->
-    @include('dashboard.doctors.addmodal')
-    @include('dashboard.doctors.updatemodal')
+    {{-- @include('dashboard.doctors.addmodal') --}}
+    {{-- @include('dashboard.doctors.updatemodal') --}}
     @include('dashboard.doctors.deletemodal')
     @include('dashboard.doctors.message_alert')
     <div class="row row-sm">
@@ -76,7 +76,8 @@
                                     <th class="wd-10p border-bottom-0">{{ __('Dashboard/doctors.phone') }}</th>
                                     <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.specialization') }}</th>
                                     <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.bio') }}</th>
-                                    <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.appointment_schedule') }}</th>
+                                    <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.status') }}</th>
+                                    <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.schedule_time') }}</th>
                                     <th class="wd-20p border-bottom-0">{{ __('Dashboard/section.operation') }}</th>
                                 </tr>
                             </thead>
@@ -87,20 +88,30 @@
                                         <td>{{ $doctor->name }}</td>
                                         <td>{{ $doctor->email }}</td>
                                         <td>{{ $doctor->phone }}</td>
-                                        <td>{{ $doctor->specialization }}</td>
-                                        <td>{{ $doctor->biography }}</td>
-                                        <td>{{ $doctor->appointment_schedule }}</td>
+                                        <td>{{ $doctor->section->name }}</td>
+                                        <td>{{ Str::limit($doctor->biography, 15) }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-info" data-toggle="modal"
-                                                data-target="#updateDoctorModal"
-                                                data-id="{{ $doctor->id }}"
-                                                data-name="{{ $doctor->name }}"
-                                                data-email="{{ $doctor->email }}"
-                                                data-phone="{{ $doctor->phone }}"
-                                                data-specialization="{{ $doctor->specialization }}"
-                                                data-biography="{{ $doctor->biography }}"
-                                                data-appointment_schedule="{{ $doctor->appointment_schedule }}"
-                                                data-url="{{ $doctor->image->url ?? '' }}">
+                                            @if ($doctor->is_active == true)
+                                                <span
+                                                    class="badge badge-success">{{ __('Dashboard/doctors.active') }}</span>
+                                            @else
+                                                <span
+                                                    class="badge badge-danger">{{ __('Dashboard/doctors.inactive') }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @foreach ($doctor->days as $day)
+                                                <span class="badge badge-info">{{ $day->name }}</span>
+                                            @endforeach
+                                            <br>
+                                            {{ __('Dashboard/doctors.schedule_from') }} :
+                                            {{ $doctor->schedule_from }} <br>
+                                            {{ __('Dashboard/doctors.schedule_to') }} :
+                                            {{ $doctor->schedule_to }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('dashboard.admin.doctors.edit', $doctor->id) }}"
+                                                class="btn btn-sm btn-info">
                                                 <i class="las la-pen"></i>
                                                 {{ __('Dashboard/doctors.edit') }}
                                             </a>
@@ -151,69 +162,8 @@
     {{-- notification script --}}
     <script src="{{ URL::asset('assets/dashboard/plugins/notify/js/notifIt.js') }}"></script>
     <script src="{{ URL::asset('assets/dashboard/plugins/notify/js/notifit-custom.js') }}"></script>
-    <script>
-        $('#updateDoctorModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id');
-            var name = button.data('name');
-            var email = button.data('email');
-            var phone = button.data('phone');
-            var specialization = button.data('specialization');
-            var biography = button.data('biography');
-            var appointment_schedule = button.data('appointment_schedule');
-            // If image exists, set the src attribute
-            var image = button.data('url');
-            var currentImage = $('#currentDoctorImageInUpdate').show();
 
-            path = '{{ env('APP_URL') . '/hospital/public/' }}';
-            if (image) {
-                currentImage.attr('src', path + image).show();
-            } else {
-                currentImage.hide();
-            }
-            // Set the form action and input values
-            var modal = $(this);
-            modal.find('form').attr('action', '{{ route('dashboard.admin.doctors.update', '') }}/' + id);
-            modal.find('#doctorName').val(name);
-            modal.find('#doctorEmail').val(email);
-            modal.find('#doctorPhone').val(phone);
-            modal.find('#doctorSpecialization').val(specialization);
-            modal.find('#doctorBio').val(biography);
-            modal.find('#appointment_schedule').val(appointment_schedule);
 
-        });
-    </script>
-
-    <script>
-        $(document).on('change', '#DoctorImageInUpdate', function() {
-            var input = this;
-            var currentImage = $('#currentDoctorImageInUpdate');
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    currentImage.attr('src', e.target.result).show();
-                };
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                currentImage.hide();
-            }
-        });
-    </script>
-    <script>
-        $(document).on('change', '#addDoctorImage', function() {
-            var input = this;
-            var currentImage = $('#currentDoctorImage');
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    currentImage.attr('src', e.target.result).show();
-                };
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                currentImage.hide();
-            }
-        });
-    </script>
 
 
     <script>
