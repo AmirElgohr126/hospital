@@ -17,15 +17,13 @@ class DoctorFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => 'Dr. ' . $this->faker->name(),
             'biography' => $this->faker->paragraph(),
-            'specialization' => $this->faker->randomElement(['Cardiology', 'Neurology', 'Pediatrics', 'Orthopedics', 'Dermatology']),
             'appointment_schedule' => $this->faker->time(),
-            'profile_picture'=> $this->faker->imageUrl(640, 480, 'people', true, 'doctor', true),
             'is_active' => $this->faker->boolean(),
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
-
+            'section_id' => \App\Models\Section::factory()->create()->id,
         ];
     }
 }

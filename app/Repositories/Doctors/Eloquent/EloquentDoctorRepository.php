@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Doctors\Eloquent;
 
+use App\Models\Day;
 use App\Models\Image;
 use App\Repositories\Doctors\DoctorRepository;
 use App\Repositories\EloquentBaseRepository;
@@ -22,38 +23,34 @@ class EloquentDoctorRepository extends EloquentBaseRepository implements DoctorR
 
     public function adminCreate($data)
     {
-        if (isset($data['profile_picture'])) {
-            $data['profile_picture'] = $this->saveImage($data['profile_picture'], 'doctors');
-        }
         $doctor = $this->create($data);
-        $doctor->image()->create([
-            'url' => $data['profile_picture'] ?? null,
-            'imageable_type' => 'App\Models\Doctor',
-            'imageable_id' => $doctor->id,
-        ]);
-
-
-
+        if (isset($data['image'])) {
+            $data['image'] = $this->saveImage($data['image'], 'doctors');
+            $doctor->image()->create([
+                'url' => $data['image'],
+            ]);
+        }
+        $dayIds = Day::whereIn('key', $data['days'])->pluck('id');
+        $doctor->days()->attach($dayIds);
+        return $doctor;
     }
 
 
     public function adminUpdate($model, $data)
     {
-        // Delete the old image if it exists
-        if (isset($data['profile_picture'])) {
+        $model->update($data);
+        // delete from local storage
+        if (isset($data['image'])) {
             if ($model->image()->exists()) {
                 $this->deleteImage($model->image->url, 'doctors');
-                $data['profile_picture'] = $this->saveImage($data['profile_picture'], 'doctors');
-                $this->update($model, $data);
-                $model->image()->update([
-                    'url' => $data['profile_picture'],
-                ]);
             }
-        } else {
-            unset($data['profile_picture']);
-
+            // save new image
+            $data['image'] = $this->saveImage($data['image'], 'doctors');
+            $model->image()->updateOrCreate([], ['url' => $data['image']]);
         }
-        return $this->update($model, $data);
+        $dayIds = Day::whereIn('key', $data['days'])->pluck('id');
+        $model->days()->sync($dayIds);
+        return $model;
     }
 
 

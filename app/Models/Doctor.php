@@ -14,18 +14,17 @@ class Doctor extends Model implements TranslatableContract
     protected $fillable = [
         'name',
         'biography',
-        'specialization',
-        'appointment_schedule',
+        'schedule_from',
+        'schedule_to',
         'phone',
         'email',
         'is_active',
+        'section_id',
     ];
 
     public $translatedAttributes = [
         'name',
         'biography',
-        'specialization',
-        'appointment_schedule',
     ];
 
 
@@ -33,5 +32,13 @@ class Doctor extends Model implements TranslatableContract
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }
+
+    public function days(){
+        return $this->belongsToMany(Day::class,'doctor_day');
     }
 }

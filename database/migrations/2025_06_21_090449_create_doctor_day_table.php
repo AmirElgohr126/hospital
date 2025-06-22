@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('doctor_translations', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('doctor_id')->unsigned();
-            $table->string('locale')->index();
-            $table->string('name')->nullable();
-            $table->text('biography')->nullable();
-            $table->unique(['doctor_id', 'locale']);
+        Schema::create('doctor_day', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('day_id')->constrained('days')->onDelete('cascade');
+            $table->unsignedInteger('doctor_id');
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
             $table->timestamps();
         });
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('doctor_translations');
+        Schema::dropIfExists('doctor_day');
     }
 };

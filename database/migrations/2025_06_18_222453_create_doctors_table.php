@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('section_id');
+            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->string('profile_picture')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->time('schedule_from')->nullable();
+            $table->time('schedule_to')->nullable();
             $table->timestamps();
         });
     }

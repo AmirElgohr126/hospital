@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('doctors', function (Blueprint $table) {
-            $table->dropColumn('profile_picture');
+        Schema::create('days', function (Blueprint $table) {
+            $table->id();
+            $table->string('key')->unique();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('doctors', function (Blueprint $table) {
-            $table->string('profile_picture')->nullable();
-        });
+        Schema::dropIfExists('days');
     }
 };
