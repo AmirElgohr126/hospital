@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth:admin','prefix' => 'dashboard/admin'], funct
     $router->put('/doctors/update/{id}', [DoctorController::class, 'update'])->name('dashboard.admin.doctors.update');
     $router->get('/doctors/{id}', [DoctorController::class, 'show'])->name('dashboard.admin.doctors.show');
     $router->delete('/doctors/{id}', [DoctorController::class, 'destroy'])->name('dashboard.admin.doctors.destroy');
+    // delete some doctors
+    $router->post('/doctors/delete', [DoctorController::class, 'deleteSelected'])->name('dashboard.admin.doctors.deleteSelected');
 });
 
 

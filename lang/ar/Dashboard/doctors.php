@@ -74,6 +74,11 @@ return [
     'schedule_to_error' => 'يجب أن يكون وقت النهاية بعد وقت البداية',
     'section_not_found' => 'القسم المحدد غير موجود',
     'schedule_to_after_schedule_from' => 'يجب أن يكون وقت النهاية بعد وقت البداية',
-
+    'deleted_doctors' => 'حذف المحدد',
+    'confirm_delete_selected' => 'هل أنت متأكد أنك تريد حذف الأطباء المحددين؟',
+    'no_doctors_selected' => 'لم يتم اختيار أي أطباء',
+    'selected_doctors_deleted_successfully' => 'تم حذف الأطباء المحددين بنجاح',
+    'no_doctor_selected' => 'لم يتم اختيار أي طبيب',
+    'doctor_details' => 'تفاصيل الطبيب',
 
 ];

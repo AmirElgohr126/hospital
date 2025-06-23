@@ -71,6 +71,24 @@ class DoctorController extends Controller
         return redirect()->route('dashboard.admin.doctors.index');
     }
 
+
+    public function deleteSelected(Request $request)
+    {
+        $doctorIds = $request->input('doctor_ids', []);
+        // convert to array if not already
+        if (!is_array($doctorIds)) {
+            $doctorIds = explode(',', $doctorIds);
+        }
+        if (empty($doctorIds)) {
+            session()->flash('error', __('Dashboard/doctors.no_doctors_selected'));
+            return redirect()->route('dashboard.admin.doctors.index');
+        }
+        $this->doctorRepository->adminDeleteSelected($doctorIds);
+        session()->flash('delete', __('Dashboard/doctors.selected_doctors_deleted_successfully'));
+        return redirect()->route('dashboard.admin.doctors.index');
+    }
+
+
     public function search(Request $request)
     {
         $query = $request->input('query');

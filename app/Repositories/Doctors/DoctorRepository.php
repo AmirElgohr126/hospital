@@ -7,6 +7,9 @@ interface DoctorRepository extends BaseRepository
 {
     public function getAllDoctors();
 
+    public function adminDeleteSelected($ids);
+
+
     public function getAllPaginatedDoctors();
 
     public function adminCreate($data);
