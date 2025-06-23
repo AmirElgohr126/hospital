@@ -14,16 +14,19 @@ class DoctorFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
         return [
             'name' => 'Dr. ' . $this->faker->name(),
             'biography' => $this->faker->paragraph(),
-            'appointment_schedule' => $this->faker->time(),
             'is_active' => $this->faker->boolean(),
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'section_id' => \App\Models\Section::factory()->create()->id,
+            'schedule_from' => $this->faker->time(),
+            'schedule_to' => $this->faker->time(),
+            'created_at' => now(),
         ];
     }
 }

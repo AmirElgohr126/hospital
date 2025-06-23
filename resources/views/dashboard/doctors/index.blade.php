@@ -22,44 +22,16 @@
                 <span class="text-muted mt-1 tx-13 mr-2 mb-0">{{ __('Dashboard/doctors.all_doctors') }}</span>
             </div>
         </div>
-        <div class="d-flex my-xl-auto right-content">
-            <div class="pr-1 mb-3 mb-xl-0">
-                <button class="btn btn-primary" data-toggle="modal"
-                    data-target="#addDoctorModal">{{ __('Dashboard/doctors.create') }}</button>
-            </div>
-            <div class="pr-1 mb-3 mb-xl-0">
-                <button type="button" class="btn btn-info btn-icon ml-2"><i class="mdi mdi-filter-variant"></i></button>
-            </div>
-            <div class="pr-1 mb-3 mb-xl-0">
-                <button type="button" class="btn btn-danger btn-icon ml-2"><i class="mdi mdi-star"></i></button>
-            </div>
-            <div class="pr-1 mb-3 mb-xl-0">
-                <button type="button" class="btn btn-warning  btn-icon ml-2"><i class="mdi mdi-refresh"></i></button>
-            </div>
-            <div class="mb-3 mb-xl-0">
-                <div class="btn-group dropdown">
-                    <button type="button" class="btn btn-primary">14 Aug 2019</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                        id="dropdownMenuDate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuDate"
-                        data-x-placement="bottom-end">
-                        <a class="dropdown-item" href="#">2015</a>
-                        <a class="dropdown-item" href="#">2016</a>
-                        <a class="dropdown-item" href="#">2017</a>
-                        <a class="dropdown-item" href="#">2018</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{-- delete selected users --}}
+        <button id="deleteAllDoctors" class="btn btn-danger">
+            <i class="las la-trash"></i>
+            {{ __('Dashboard/doctors.deleted_doctors') }}
+        </button>
     </div>
     <!-- breadcrumb -->
 @endsection
 @section('content')
     <!-- row -->
-    {{-- @include('dashboard.doctors.addmodal') --}}
-    {{-- @include('dashboard.doctors.updatemodal') --}}
     @include('dashboard.doctors.deletemodal')
     @include('dashboard.doctors.message_alert')
     <div class="row row-sm">
@@ -70,13 +42,20 @@
                         <table class="table text-md-nowrap" id="example1">
                             <thead>
                                 <tr>
-                                    <th class="wd-3p border-bottom-0">#</th>
+                                    <th class="wd-2p border-bottom-0">#</th>
+                                    <th class="wd-4p border-bottom-0">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="select_all">
+                                            <label class="custom-control-label" for="select_all"></label>
+                                        </div>
+                                    </th>
                                     <th class="wd-13p border-bottom-0">{{ __('Dashboard/doctors.name') }}</th>
+                                    <th class="wd-10p border-bottom-0">{{ __('Dashboard/doctors.image') }}</th>
                                     <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.email') }}</th>
                                     <th class="wd-10p border-bottom-0">{{ __('Dashboard/doctors.phone') }}</th>
                                     <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.specialization') }}</th>
                                     <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.bio') }}</th>
-                                    <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.status') }}</th>
+                                    <th class="wd-10p border-bottom-0">{{ __('Dashboard/doctors.status') }}</th>
                                     <th class="wd-15p border-bottom-0">{{ __('Dashboard/doctors.schedule_time') }}</th>
                                     <th class="wd-20p border-bottom-0">{{ __('Dashboard/section.operation') }}</th>
                                 </tr>
@@ -85,6 +64,19 @@
                                 @foreach ($doctors as $doctor)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="checkbox-{{ $doctor->id }}">
+                                                <label class="custom-control-label"
+                                                    for="checkbox-{{ $doctor->id }}"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <img src="{{ $doctor->image ? asset($doctor->image->url) : '/storage/doctors/default.jpg' }}"
+                                                alt="{{ $doctor->name }}" class="img-fluid rounded-circle"
+                                                style="width: 50px; height: 50px;">
+                                        </td>
                                         <td>{{ $doctor->name }}</td>
                                         <td>{{ $doctor->email }}</td>
                                         <td>{{ $doctor->phone }}</td>
@@ -111,11 +103,11 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('dashboard.admin.doctors.edit', $doctor->id) }}"
-                                                class="btn btn-sm btn-info">
+                                                class="btn btn-sm btn-info wd-90p mb-1">
                                                 <i class="las la-pen"></i>
                                                 {{ __('Dashboard/doctors.edit') }}
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            <a href="#" class="btn btn-sm btn-danger wd-90p" data-toggle="modal"
                                                 data-target="#deleteDoctorModal" data-id="{{ $doctor->id }}"
                                                 data-name="{{ $doctor->name }}">
                                                 <i class="las la-trash"></i>
@@ -164,8 +156,49 @@
     <script src="{{ URL::asset('assets/dashboard/plugins/notify/js/notifit-custom.js') }}"></script>
 
 
-
-
+    <script>
+        $(document).ready(function() {
+            $('#select_all').on('click', function() {
+                var checked = this.checked;
+                $('input[type="checkbox"]').not(this).prop('checked', checked);
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#deleteAllDoctors').on('click', function() {
+                var selectedIds = [];
+                $('input[type="checkbox"]:checked').each(function() {
+                    if ($(this).attr('id') && $(this).attr('id').startsWith('checkbox-')) {
+                        selectedIds.push($(this).attr('id').replace('checkbox-', ''));
+                    }
+                });
+                if (selectedIds.length > 0) {
+                    if (!confirm('{{ __('Dashboard/doctors.confirm_delete_selected') }}')) {
+                        return;
+                    }
+                    var form = $('<form>', {
+                        'method': 'POST',
+                        'action': '{{ route('dashboard.admin.doctors.deleteSelected') }}'
+                    });
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': '_token',
+                        'value': '{{ csrf_token() }}'
+                    }));
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': 'doctor_ids',
+                        'value': selectedIds.join(',')
+                    }));
+                    $('body').append(form);
+                    form.submit();
+                } else {
+                    alert('{{ __('Dashboard/doctors.no_doctor_selected') }}');
+                }
+            });
+        });
+    </script>
     <script>
         $('#deleteDoctorModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);

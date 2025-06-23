@@ -16,6 +16,19 @@ class EloquentDoctorRepository extends EloquentBaseRepository implements DoctorR
         return $this->allPaginated();
     }
 
+    public function adminDeleteSelected($ids)
+    {
+        $doctors = $this->findByMany($ids);
+        foreach ($doctors as $doctor) {
+            if ($doctor->image()->exists()) {
+                $this->deleteImage($doctor->image->url, 'doctors');
+            }
+            $doctor->days()->detach();
+            $doctor->delete();
+        }
+        return true;
+    }
+
     public function getAllDoctors()
     {
         return $this->all();
